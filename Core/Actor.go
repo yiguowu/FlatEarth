@@ -3,7 +3,8 @@ package Core
 type Actor interface {
 	OnGlance() string
 	OnInspect() string
-	OnProvoke() string
+	OnProvoke(actor *Actor) string
+	OnProvoked(actor *Actor) string
 	OnDeath() string
 	OnIdle() string
 	OnMove() string
@@ -14,4 +15,6 @@ type Actor interface {
 	OnApprentice()
 
 	TriggerEvent(eventId int)
+
+	GetName() string
 }
