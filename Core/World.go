@@ -3,6 +3,7 @@ package Core
 import (
 	"FlatEarth/SharedLib"
 	"gopkg.in/yaml.v2"
+	"log"
 )
 
 type World struct {
@@ -32,4 +33,20 @@ func (world *World) Save(filename string) {
 	if err == nil {
 		SharedLib.WriteFile(dat, filename)
 	}
+}
+
+func (world *World) Load(filename string) {
+	dat := SharedLib.ReadFile(filename)
+	err := yaml.Unmarshal(dat, world)
+	SharedLib.PanicOnError(err, SharedLib.WARNING)
+}
+
+func (world *World) Print() {
+	var x, y uint
+	for x = 0; x < world.Xsize; x++ {
+		for y = 0; y < world.Ysize; y++ {
+			log.Print(world.BlockList[x][y])
+		}
+	}
+	log.Print(world.Xsize, world.Xsize, world.Season)
 }

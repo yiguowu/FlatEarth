@@ -7,5 +7,6 @@ const worldFile = "../Config/World.yaml"
 func main() {
 	world := new(Core.World)
 	world.InitWorld(200, 200)
-	world.Save(worldFile)
+	world.Load(worldFile)
+	world.Print()
 }
