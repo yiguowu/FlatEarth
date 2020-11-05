@@ -1,5 +1,10 @@
 package Core
 
+type Combo struct {
+	Text       string
+	ActionType int
+}
+
 type Actor interface {
 	OnGlance() string
 	OnInspect() string
