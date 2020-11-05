@@ -1,5 +1,10 @@
 package Core
 
+import (
+	"FlatEarth/SharedLib"
+	"gopkg.in/yaml.v2"
+)
+
 type Character []struct {
 	Type      string        `yaml:"Type"`
 	ID        int           `yaml:"ID"`
@@ -19,4 +24,16 @@ type Character []struct {
 		Additional []string `yaml:"Additional"`
 	} `yaml:"Wield"`
 	Skill []string `yaml:"Skill"`
+}
+
+type CharacterFactory struct {
+	MaxID uint `yaml:"MaxID"`
+}
+
+func (charFac *CharacterFactory) Init(filename string) {
+	var load CharacterFactory
+	dat := SharedLib.ReadFile(filename)
+	err := yaml.Unmarshal(dat, &load)
+	SharedLib.PanicOnError(err, SharedLib.FATAL)
+	charFac.MaxID = load.MaxID
 }
