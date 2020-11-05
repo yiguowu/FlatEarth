@@ -18,7 +18,6 @@ const (
 	Plain     Land = "平原"
 	Hill      Land = "丘陵"
 	Mountain  Land = "大山"
-	River     Land = "河流"
 	Lake      Land = "湖泊"
 	Swamp     Land = "沼泽"
 	Grassland Land = "草地"
