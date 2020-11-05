@@ -1,1 +1,1 @@
-# FlatEarth
+# FlatEarth is a mud like game for my own enjoyment
