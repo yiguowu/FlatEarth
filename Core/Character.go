@@ -3,9 +3,10 @@ package Core
 import (
 	"FlatEarth/SharedLib"
 	"gopkg.in/yaml.v2"
+	"log"
 )
 
-type Character []struct {
+type Character struct {
 	Type      string        `yaml:"Type"`
 	ID        int           `yaml:"ID"`
 	Mountable bool          `yaml:"Mountable"`
@@ -27,7 +28,8 @@ type Character []struct {
 }
 
 type CharacterFactory struct {
-	MaxID uint `yaml:"MaxID"`
+	MaxID         uint        `yaml:"MaxID"`
+	CharacterList []Character `yaml:"CharacterList,omitempty"`
 }
 
 func (charFac *CharacterFactory) Init(filename string) {
@@ -44,4 +46,15 @@ func (charFac *CharacterFactory) Save(filename string) {
 	if err == nil {
 		SharedLib.WriteFile(dat, filename)
 	}
+}
+
+func (charFac *CharacterFactory) Print() {
+	log.Print("MaxID is ", charFac.MaxID)
+	log.Print("CharacterList ", charFac.CharacterList)
+}
+
+func (charFac *CharacterFactory) Load(filename string) {
+	dat := SharedLib.ReadFile(filename)
+	err := yaml.Unmarshal(dat, &(charFac.CharacterList))
+	SharedLib.PanicOnError(err, SharedLib.WARNING)
 }

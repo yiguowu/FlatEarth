@@ -27,7 +27,7 @@ func WriteFile(dat []byte, fileName string, optional ...string) {
 		if err != nil {
 			return
 		}
-		mode = os.FileMode.Perm(fileMode)
+		mode = os.FileMode.Perm(os.FileMode(fileMode))
 	}
 	if len(optional) > 1 {
 		path = optional[1]
