@@ -37,3 +37,11 @@ func (charFac *CharacterFactory) Init(filename string) {
 	SharedLib.PanicOnError(err, SharedLib.FATAL)
 	charFac.MaxID = load.MaxID
 }
+
+func (charFac *CharacterFactory) Save(filename string) {
+	dat, err := yaml.Marshal(charFac)
+	SharedLib.PanicOnError(err, SharedLib.WARNING)
+	if err == nil {
+		SharedLib.WriteFile(dat, filename)
+	}
+}
