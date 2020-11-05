@@ -1,0 +1,49 @@
+- Type: 玩家
+  ID: 0
+  Mountable: false
+  Name: 玩家
+  Rank: null
+  Strength: 100
+  Life: 100
+  Defense: 100
+  Speed: 10
+  Gold: 10
+  Backpack: []
+  Wield:
+    Armor: 布衣
+    Weapon: null
+    Mount: null
+    Additional:
+      - 布鞋
+  Skill:
+    - 一般攻击
+    - 全力攻击
+    - 躲闪
+    - 逃跑
+    - 贿赂
+- Type: 军士
+  ID: 1
+  Mountable: false
+  Name: 小兵
+  Rank: 小兵
+  Strength: 100
+  Life: 100
+  Defense: 100
+  Speed: 10
+  Gold: 5
+  Backpack:
+    - 通行证
+  Wield:
+    Armor: 布甲
+    Weapon: 大刀
+    Mount: null
+    Additional:
+      - 头盔
+      - 布鞋
+  Skill:
+    - 一般攻击
+    - 全力攻击
+    - 躲闪
+    - 逃跑
+    - 贿赂
+    - 恐吓
