@@ -9,11 +9,13 @@ type World struct {
 	Xsize     uint       `yaml:"Xsize"`
 	Ysize     uint       `yaml:"Ysize"`
 	BlockList [][]*Block `yaml:"BlockList"`
+	Season    Season     `yaml:"Season"`
 }
 
 func (world *World) InitWorld(x, y uint) {
 	world.Xsize = x
 	world.Ysize = y
+	world.Season = Spring
 	world.BlockList = make([][]*Block, world.Xsize)
 	for x = 0; x < world.Xsize; x++ {
 		world.BlockList[x] = make([]*Block, world.Ysize)
