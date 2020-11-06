@@ -8,14 +8,36 @@ import (
 	"time"
 )
 
+type WorldInstance struct {
+	World      *World
+	MessageBus *chan WorldEvent
+}
+
 type World struct {
-	Xsize     uint       `yaml:"Xsize"`
-	Ysize     uint       `yaml:"Ysize"`
+	Xsize     int        `yaml:"Xsize"`
+	Ysize     int        `yaml:"Ysize"`
 	BlockList [][]*Block `yaml:"BlockList"`
 	Season    Season     `yaml:"Season"`
 }
 
-func (world *World) InitWorld(x, y uint) {
+type WorldEvent struct {
+	EventType   WorldEventType
+	LocationX   int
+	LocationY   int
+	Description string
+	Timestamp   int64
+	Source      *Actor
+	Target      []*Actor
+}
+
+type Timer struct {
+	Name       string
+	LastFired  int64
+	Period     time.Duration
+	MessageBus *chan WorldEvent
+}
+
+func (world *World) InitWorld(x, y int) {
 	world.Xsize = x
 	world.Ysize = y
 	world.Season = Spring
@@ -44,7 +66,7 @@ func (world *World) Load(filename string) {
 }
 
 func (world *World) Print() {
-	var x, y uint
+	var x, y int
 	for x = 0; x < world.Xsize; x++ {
 		for y = 0; y < world.Ysize; y++ {
 			log.Print(world.BlockList[x][y])
@@ -57,7 +79,7 @@ func (world *World) RandomSet(mountainShare, hillShare, plainShare, lakeShare, s
 	totalLand := mountainShare + hillShare + plainShare + lakeShare + swampShare + grassShare
 	totalWeather := sunny + rainy + cloudy + stormy
 	rand.Seed(time.Now().UTC().UnixNano())
-	var x, y uint
+	var x, y int
 	for x = 0; x < world.Xsize; x++ {
 		for y = 0; y < world.Ysize; y++ {
 			score := rand.Intn(totalLand)

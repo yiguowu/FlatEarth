@@ -52,3 +52,10 @@ const (
 	Summer Season = "夏天"
 	Fall   Season = "秋天"
 )
+
+type WorldEventType string
+
+const (
+	WeatherChange WorldEventType = "天气变化"
+	SeasonChange  WorldEventType = "季节变化"
+)
