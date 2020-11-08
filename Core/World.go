@@ -98,9 +98,8 @@ func (world *World) Print() {
 	log.Print(world.Xsize, world.Xsize, world.Season)
 }
 
-func (world *World) RandomSet(mountainShare, hillShare, plainShare, lakeShare, swampShare, grassShare int, sunny, rainy, cloudy, stormy int, filename string) {
+func (world *World) RandomSet(mountainShare, hillShare, plainShare, lakeShare, swampShare, grassShare int, filename string) {
 	totalLand := mountainShare + hillShare + plainShare + lakeShare + swampShare + grassShare
-	totalWeather := sunny + rainy + cloudy + stormy
 	rand.Seed(time.Now().UTC().UnixNano())
 	var x, y int
 	for x = 0; x < world.Xsize; x++ {
@@ -118,16 +117,6 @@ func (world *World) RandomSet(mountainShare, hillShare, plainShare, lakeShare, s
 				world.BlockList[x][y].Land = Hill
 			} else {
 				world.BlockList[x][y].Land = Mountain
-			}
-			score = rand.Intn(totalWeather)
-			if score > (sunny + rainy + cloudy) {
-				world.BlockList[x][y].Weather = Stormy
-			} else if score > (sunny + rainy) {
-				world.BlockList[x][y].Weather = Cloudy
-			} else if score > sunny {
-				world.BlockList[x][y].Weather = Rainy
-			} else {
-				world.BlockList[x][y].Weather = Sunny
 			}
 		}
 	}
