@@ -59,3 +59,11 @@ const (
 	WeatherChange WorldEventType = "天气变化"
 	SeasonChange  WorldEventType = "季节变化"
 )
+
+type System struct {
+	Hour    int     `yaml:"hour"`
+	Start   string  `yaml:"start"`
+	Weather float64 `yaml:"weather"`
+}
+
+const MaxEvent = 65536

@@ -37,6 +37,29 @@ type Timer struct {
 	MessageBus *chan WorldEvent
 }
 
+func GlobalTime(interval int, world *World, evt *chan WorldEvent) {
+	sleepTime := time.Duration(interval) * time.Second
+	for {
+		time.Sleep(sleepTime)
+	}
+}
+
+func (ins *WorldInstance) InitWorldInstance(system, filename string, x, y int) {
+	ins.World = new(World)
+	if filename == "" {
+		ins.World.InitWorld(x, y)
+	} else {
+		ins.World.Load(filename)
+	}
+	dat := SharedLib.ReadFile(system)
+
+	var sys System
+	err := yaml.Unmarshal(dat, &sys)
+	SharedLib.PanicOnError(err, SharedLib.FATAL)
+	eventBus := make(chan WorldEvent, MaxEvent)
+	go GlobalTime(sys.Hour, ins.World, &eventBus)
+}
+
 func (world *World) InitWorld(x, y int) {
 	world.Xsize = x
 	world.Ysize = y
