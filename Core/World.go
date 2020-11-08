@@ -2,6 +2,8 @@ package Core
 
 import (
 	"FlatEarth/SharedLib"
+	"errors"
+	"fmt"
 	"gopkg.in/yaml.v2"
 	"log"
 	"math/rand"
@@ -37,10 +39,64 @@ type Timer struct {
 	MessageBus *chan WorldEvent
 }
 
-func GlobalTime(interval int, world *World, evt *chan WorldEvent) {
+func EventSink(evtBus *chan WorldEvent) {
+	for {
+		event := <-*evtBus
+		switch event.EventType {
+		case WeatherChange:
+			fmt.Println("Block ", event.LocationX, event.LocationY, " at ", event.Timestamp, "天气变化", event.Description)
+		case SeasonChange:
+			fmt.Println(event.Description)
+		default:
+			SharedLib.PanicOnError(errors.New("UnknownEvent"), SharedLib.WARNING)
+		}
+	}
+}
+
+func WeatherCheck(world *World, evtBus *chan WorldEvent) {
+	for x := 0; x < world.Xsize; x++ {
+		for y := 0; y < world.Ysize; y++ {
+			previousWeather := world.BlockList[x][y].Weather
+			world.BlockList[x][y].Weather = CalculateWeather(WeatherChangeMatrix, world.BlockList[x][y].Weather)
+			if previousWeather != world.BlockList[x][y].Weather {
+				var event WorldEvent
+				event.LocationX = x
+				event.LocationY = y
+				event.EventType = WeatherChange
+				event.Timestamp = time.Now().UnixNano()
+				switch world.BlockList[x][y].Weather {
+				case Sunny:
+					if previousWeather == Cloudy {
+						event.Description = "云散了"
+					} else {
+						event.Description = "天放晴了"
+					}
+				case Rainy:
+					if previousWeather == Stormy {
+						event.Description = "雨小了"
+					} else {
+						event.Description = "现在下起雨来"
+					}
+				case Cloudy:
+					if previousWeather == Sunny {
+						event.Description = "天上飘过几朵云"
+					} else {
+						event.Description = "雨停了，天上只剩几朵云"
+					}
+				case Stormy:
+					event.Description = "天上下起暴雨来"
+				}
+				*evtBus <- event
+			}
+		}
+	}
+}
+
+func GlobalTime(interval int, world *World, evtBus *chan WorldEvent) {
 	sleepTime := time.Duration(interval) * time.Second
 	for {
 		time.Sleep(sleepTime)
+		go WeatherCheck(world, evtBus)
 	}
 }
 
@@ -58,6 +114,10 @@ func (ins *WorldInstance) InitWorldInstance(system, filename string, x, y int) {
 	SharedLib.PanicOnError(err, SharedLib.FATAL)
 	eventBus := make(chan WorldEvent, MaxEvent)
 	go GlobalTime(sys.Hour, ins.World, &eventBus)
+	go EventSink(&eventBus)
+	for {
+		time.Sleep(60 * time.Hour)
+	}
 }
 
 func (world *World) InitWorld(x, y int) {
