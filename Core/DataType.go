@@ -33,10 +33,10 @@ const (
 )
 
 var WeatherChangeMatrix = [4][4]float32{
-	[4]float32{0.7, 0.1, 0.2, 0.0},
-	[4]float32{0.3, 0.2, 0.4, 0.1},
-	[4]float32{0.5, 0.2, 0.3, 0.0},
-	[4]float32{0.3, 0.3, 0.3, 0.1},
+	{0.7, 0.1, 0.2, 0.0},
+	{0.3, 0.2, 0.4, 0.1},
+	{0.5, 0.2, 0.3, 0.0},
+	{0.3, 0.3, 0.3, 0.1},
 }
 
 type Item string
@@ -68,9 +68,10 @@ const (
 )
 
 type System struct {
-	Hour    int     `yaml:"hour"`
-	Start   string  `yaml:"start"`
-	Weather float64 `yaml:"weather"`
+	Hour     int     `yaml:"hour"`
+	Start    string  `yaml:"start"`
+	Weather  float64 `yaml:"weather"`
+	AutoSave int     `yaml:"autosave"`
 }
 
 const MaxEvent = 65536

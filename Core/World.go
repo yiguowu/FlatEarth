@@ -44,9 +44,9 @@ func EventSink(evtBus *chan WorldEvent) {
 		event := <-*evtBus
 		switch event.EventType {
 		case WeatherChange:
-			fmt.Println("Block ", event.LocationX, event.LocationY, " at ", event.Timestamp, "天气变化", event.Description)
+			continue
 		case SeasonChange:
-			fmt.Println(event.Description)
+			continue
 		default:
 			SharedLib.PanicOnError(errors.New("UnknownEvent"), SharedLib.WARNING)
 		}
@@ -115,6 +115,7 @@ func (ins *WorldInstance) InitWorldInstance(system, filename string, x, y int) {
 	eventBus := make(chan WorldEvent, MaxEvent)
 	go GlobalTime(sys.Hour, ins.World, &eventBus)
 	go EventSink(&eventBus)
+	go ins.World.AutoSave(filename, sys.AutoSave)
 	for {
 		time.Sleep(60 * time.Hour)
 	}
@@ -146,6 +147,15 @@ func (world *World) Load(filename string) {
 	dat := SharedLib.ReadFile(filename)
 	err := yaml.Unmarshal(dat, world)
 	SharedLib.PanicOnError(err, SharedLib.WARNING)
+}
+
+func (world *World) AutoSave(filename string, interval int) {
+	for {
+		time.Sleep(time.Duration(interval) * time.Second)
+		fmt.Println("Saving")
+		world.Save(filename)
+		fmt.Println("Done")
+	}
 }
 
 func (world *World) Print() {
