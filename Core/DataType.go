@@ -69,7 +69,6 @@ const (
 
 type System struct {
 	Hour     int     `yaml:"hour"`
-	Start    string  `yaml:"start"`
 	Weather  float64 `yaml:"weather"`
 	AutoSave int     `yaml:"autosave"`
 }

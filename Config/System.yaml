@@ -1,6 +1,5 @@
 ---
-hour: 5
-start: "1/1/1900 00:00:00"
+hour: 30
 weather: 0.1
-autosave: 30
+autosave: 300
 
