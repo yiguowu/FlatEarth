@@ -20,6 +20,7 @@ type World struct {
 	BlockList   [][]*Block `yaml:"BlockList"`
 	Season      Season     `yaml:"Season"`
 	CurrentTime string     `yaml:"CurrentTime,omitempty"`
+	Time        Sun        `yaml:"Time,omitempty"`
 }
 
 type WorldEvent struct {
@@ -151,7 +152,6 @@ func GlobalTime(interval int, world *World, evtBus *chan WorldEvent) {
 }
 
 func (ins *WorldInstance) InitWorldInstance(system, filename string, x, y int) {
-
 	ins.World = new(World)
 	if filename == "" {
 		ins.World.InitWorld(x, y)

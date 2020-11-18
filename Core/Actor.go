@@ -22,4 +22,5 @@ type Actor interface {
 	TriggerEvent(eventId int)
 
 	GetName() string
+	Periodic()
 }

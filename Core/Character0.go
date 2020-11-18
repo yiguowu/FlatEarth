@@ -58,6 +58,8 @@ func (char *Character0) OnInspect() string {
 
 func (char *Character0) OnProvoke(actor *Actor) string {
 	description := (*actor).GetName() + "企图袭击" + char.GetName() + "。"
+	char.Status = Fight
+	char.EnemyList = append(char.EnemyList, *actor)
 	return description
 }
 

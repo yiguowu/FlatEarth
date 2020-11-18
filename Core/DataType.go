@@ -39,6 +39,13 @@ var WeatherChangeMatrix = [4][4]float32{
 	{0.3, 0.3, 0.3, 0.1},
 }
 
+type Status string
+
+const (
+	Peace Status = "和平"
+	Fight Status = "战斗"
+)
+
 type Item string
 
 const (
@@ -65,6 +72,7 @@ type WorldEventType string
 const (
 	WeatherChange WorldEventType = "天气变化"
 	SeasonChange  WorldEventType = "季节变化"
+	SunChange     WorldEventType = "昼夜变化"
 )
 
 type System struct {
@@ -73,4 +81,10 @@ type System struct {
 	AutoSave int     `yaml:"autosave"`
 }
 
+type Sun string
+
+const (
+	SunRise Sun = "日出"
+	SunSet  Sun = "日落"
+)
 const MaxEvent = 65536
